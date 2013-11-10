@@ -17,7 +17,6 @@ class perlbrew::install {
         #logoutput => true,
     }
 
-    # FIXME this at least, should only happen once
     exec { 'add perlbrew to $PATH':
         path => '/bin/',
         command => 'echo "source ~/perl5/perlbrew/etc/bashrc" >> /home/vagrant/.bashrc',
@@ -25,6 +24,7 @@ class perlbrew::install {
         cwd => '/home/vagrant',
         #logoutput => true,
         before => Exec['perlbrew init'],
+        onlyif => "test `grep -c perl5/perlbrew/etc/bashrc2 /home/vagrant/.bashrc` -eq 0",
     }
 
     exec { 'perlbrew init':
